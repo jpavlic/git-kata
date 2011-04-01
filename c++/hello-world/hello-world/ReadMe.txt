@@ -1,0 +1,1 @@
+This application simply prints a "Hello World!" line on the console.

@@ -1,0 +1,197 @@
+Git Kata
+
+This Kata is designed to not only familiarize you with Git, but also to help you understand how to do common tasks that you would use in the real world on a software development team.
+
+Git Resources:
+
+http://gitready.com/
+http://www-cs-students.stanford.edu/~blynn/gitmagic/index.html
+https://git.wiki.kernel.org/index.php/GitFaq'
+http://gitref.org/
+
+Kata 1: How do I git a repository?
+	a. A bare repository
+	b. A repository with submodules
+	c. What the heck is origin
+	d. What the heck is master
+Kata 2: How do I ignore files?
+	a. A file, files, directory, directories
+	b. I have a file that should be ignored, and not be pulled down every time, what do I do?
+Kata 3: Why/How should/do I use local branches?
+	a. Keeping master and branch safe from pull when pushing
+	b. Getting rid of CRAP quickly
+	c. Merging with latest and pushing
+Kata 4: I have just hosed everything up, now what?
+	a. Resetting to HEAD
+	b. Wiping everything and starting over, nuke time
+	c. Using tags
+Kata 5: How do I share my code with others without ruining origin?
+	a. Creating a remote branch
+	b. Deleting a remote branch
+	c. Merging a remote branch with origin
+Kata 6: Playing a game with remote branches
+	a. Who can find the secret code first?
+	b. A program in two parts
+Kata 7: What the heck are submodules and how can I use them?
+	a. How do I modify a submodule and make the changes apply to their users?
+
+
+ta 1: How do I "git" a repository?
+
+In this kata, we will simply "git" a repository. Let's say I want to collaborate with someone on a project, or get a copy of a project to look at or use the code. What do I need to do, and what is the git term? It is called cloning.
+
+STEP 1: Clone the git-kata repository
+STEP 2: Pull down the submodule
+
+a. A simple repository
+
+It is very simple, and all you need to do is run one command: git clone [URL]
+
+In our case, the [URL] is: git@10.30.0.245:[PROJECT NAME].git
+
+Where [PROJECT NAME] is the name of a project, like: VirtualHold.
+
+When you run this command, it will create a directory named [PROJECT NAME]. If you want it to go to a different directory, just add a parameter at the end: git clone [URL] [DIRECTORY TO CREATE].
+
+Where [DIRECTORY TO CREATE] is the folder name you desire.
+
+More info for the geek in you:
+
+This copies all of the history of the project in order for you to have it locally. It also gives you a working directory of the main branch of the project. All the project data is in a subdirectory called ".git".
+
+b. A repository with submodules
+
+Let's say I want to collaborate with someone on a project, or get a copy of a project to look at or use the code, but it has projects linked to it. What do I need to do, and what is the git terms?
+
+It is very simple, and all you need to do is run this set of commands:
+
+git clone [URL]
+git submodule init
+git submodule sync
+git submodule update --init --recursive
+
+What is a submodule?
+
+It essentially allows you to attach an external repository inside another repository at a specific path.
+
+c. What the heck is origin?
+
+Run the command: git remote
+
+The cloned repository knows about a remote repository that has been name origin by default.
+
+To see what the heck it is, and how it works, rung: git remote show origin
+
+  Fetch URL: git@10.30.0.245:git-kata.git
+  Push  URL: git@10.30.0.245:git-kata.git
+  HEAD branch: master
+  Remote branch:
+    master tracked
+  Local branch configured for 'git pull':
+    master merges with remote master
+  Local ref configured for 'git push':
+    master pushes to master (up to date)
+
+The remote repository "origin" is simply the original git-kata repository. Remote repositories usually live on a separate machine, or a centralized server. However, they could really point anywhere, even the same machine. There is nothing special about the name "origin", but it is convention to have it point to the primary centralized repository if it exists.
+
+To see your config:
+
+Open the file .git/config from your repository. Look at the line: [remote "origin"].
+
+[remote "origin"]
+        fetch = +refs/heads/*:refs/remotes/origin/*
+        url = git@10.30.0.245:git-kata.git
+
+d. What the heck is master?
+
+master is a default branch that was created for you locally
+
+Kata 2: How do I ignore files?
+
+So, you have some files that you don't really want to keep. Maybe they are object files, maybe they are lib files, binaries, anything.
+
+In order to delete files, you will need to ignore them. How do you ignore them? In order to ignore files you must edit a file named, conveniently, ".gitignore".
+
+STEP 1: Add a file to the project that you don't want, perhaps by building a project.
+STEP 2: In order to see this new file, perform: git status
+STEP 3: Edit the .gitignore file to exclude these files.
+STEP 4:In order to see that this was accurate, perform: git status (you should not see your file)
+
+a. A file, files, directory, directories
+
+Files
+	i. Edit the .gitignore file within the root of your repository
+            ii. Enter the name of the file: garbage.txt
+
+Files in directories
+
+	i. Edit the .gitignore file within the root of your repository
+	ii. Enter the path relative to the root of the repository: garbage/garbage1.txt
+
+An entire directory
+	i. Edit the .gitignore file within the root of your repository
+	ii. Enter the path relative to the root of the repository: garbage
+
+b. I have a file that should be ignored, and not be pulled down every time, what do I do?
+
+	i. Delete the file from the repository: git rm garbage.txt
+	ii. Edit the .gitignore file within the root of your repository
+	iii. Make your changes
+
+.gitignore
+c++/hello-world/Debug
+c++/hello-world/Release
+c++/hello-world/hello-world/Debug
+c++/hello-world/hello-world/Release
+c#/hello-world/hello-world/bin
+c#/hello-world/hello-world/obj
+
+Kata 3: Why/How should/do I use local branches?
+
+From a student at Stanford:
+
+Problem: External factors inevitably necessitate context switching. A severe bug manifests in the released version without warning. The deadline for a certain feature is moved closer. A developer whose help you need for a key section of the project is about to leave. In all cases, you must abruptly drop what you are doing and focus on a completely different task.
+Interrupting your train of thought can be detrimental to your productivity, and the more cumbersome it is to switch contexts, the greater the loss. With centralized version control we must download a fresh working copy from the central server. Distributed systems fare better, as we can clone the desired version locally.
+But cloning still entails copying the whole working directory as well as the entire history up to the given point. Even though Git reduces the cost of this with file sharing and hard links, the project files themselves must be recreated in their entirety in the new working directory.
+Solution: Git has a better tool for these situations that is much faster and more space-efficient than cloning: git branch.
+With this magic word, the files in your directory suddenly shapeshift from one version to another. This transformation can do more than merely go back or forward in history. Your files can morph from the last release to the experimental version to the current development version to your friend’s version and so on.
+
+STEP 1: Perform a clean git clone
+STEP 2: Before making any changes, create a branch
+STEP 3: Switch to your branch
+STEP 4: Do some work on your local branch in a file
+STEP 5: Commit your changes to your local branch
+STEP 6: Have a friend do some work in the same file and push the changes
+STEP 7: Switch to your master
+STEP 8: Pull the latest chagnes
+STEP 9: Merge your changes with master and your local branch
+STEP 10: Push your latest changes
+STEP 11: Have your friend verify them
+
+a. Keeping master and branch safe from pull when pushing
+
+You might wonder if branches are worth the bother. After all, clones are almost as fast, and you can switch between them with cd instead of esoteric Git commands.
+Consider web browsers. Why support multiple tabs as well as multiple windows? Because allowing both accommodates a wide variety of styles. Some users like to keep only one browser window open, and use tabs for multiple webpages. Others might insist on the other extreme: multiple windows with no tabs anywhere. Others still prefer something in between.
+Branching is like tabs for your working directory, and cloning is like opening a new browser window. These operations are fast and local, so why not experiment to find the combination that best suits you? Git lets you work exactly how you want.
+
+b. Getting rid of CRAP quickly
+
+Just delete the branch: git branch -d mylocalbranch
+
+c. Merging with latest and pushing
+
+i. List all your branches: git branch
+ii. Create a local branch: git branch mylocalbranch
+iii. Switch to your local branch: git checkout mylocalbranch
+iv. Switch back to your master: git checkout master
+v. Create a local branch and switch to it: git checkout -b mylocalbranch
+vi. Merge your changes on a local branch with master:
+	* commit all your changes
+	* git checkout master
+	* git pull origin master
+	* git merge mylocalbranch
+	* resolve changes
+	* git push origin master
+
+
+

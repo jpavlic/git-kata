@@ -1,0 +1,44 @@
+I. Creating a new repository.
+	1. Create the repository in gitosis
+		a. Make sure you have permission to add or change gitosis.
+		b. Clone gitosis if you haven't already: git clone git@10.30.0.245:gitosis-admin.git
+		c. Make sure you have the latest gitosis: git pull origin master
+		d. Edit gitosis cofig: gitosis.conf
+		e. Add your repository to gitosis by adding the following lines to the gitosis.conf
+			[group example]
+			writeable = example
+			members = @developers @testers @techpub
+		f. Save the gitosis.conf file
+		g. Commit the file change to git: git commit -a -m "add repository"
+		h. Make sure that the changes are stored in gitosis: git push origin master
+	2. Create the repository locally
+		a. Create a new directory [example]
+		b. Navigate to that directory [example].
+		c. Run the command: git init
+		d. Create a file: README
+		e. Edit the file adding information to why the repository should exist.
+		f. Save the file.
+		g. Add the file to git: git add README
+		h. Commit the file change to git: git commit -m "initial commit"
+	3. Push the repository to gitosis
+		a. Within the new repository, add a remote: git remote add origin git@10.30.0.245:git-kata.git
+		b. Make sure that the new repository is in gitosis: git push origin master
+II. Cloning an existing repository
+	1. Clone an existing repository: git clone git@10.30.0.245:example.git
+	2. Navigate to that directory [example]
+	3. Run the command: git status
+III. Ignoring files and directories
+	1. Ignoring specific files in the root of your repository
+		a. Edit the .gitignore file within the root of your repository
+		b. Enter the name of the file: garbage.txt
+	2. Ignoring a specific file in a subdirectory within your repository
+		a. Edit the .gitignore file within the root of your repository
+		b. Enter the path relative to the root of the repository: garbage/garbage1.txt
+	3. Ignoring an entire directory
+		a. Edit the .gitignore file within the root of your repository
+		b. Enter the path relative to the root of the repository: garbage
+IV. Tagging git so you can get back to it later
+	1. Tagging your last commit
+		a. At the point you want a tag: git tag 1.0
+	2. 
+		
