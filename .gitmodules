@@ -1,0 +1,3 @@
+[submodule "git-kata-sub"]
+	path = git-kata-sub
+	url = git@github.com:jpavlic/git-kata-sub.git
